@@ -2,4 +2,3 @@ __pycache__
 .env
 venv
 .pytest_cache
-requirements-local.txt
