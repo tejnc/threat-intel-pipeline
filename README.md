@@ -136,5 +136,5 @@ For testing locally run this commmand
   ✅ Performance Report
   ✅ README with architecture
 
-## 📞 Contact
-  Developed by Tej Narayan Chaudhary. For inquiries, evaluation, or collaboration opportunities, please connect via [Github](https://github.com/tejnc) or [LinkedIn](https://www.linkedin.com/in/tej-narayan-chaudhary-545a57176).
+## 📞 Info
+  Developed by Tezz Chaudhary.
