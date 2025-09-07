@@ -1,0 +1,354 @@
+{
+  "openapi": "3.1.0",
+  "info": { "title": "Threat Intel Pipeline RAG ", "version": "0.1.0" },
+  "paths": {
+    "/start_pipeline": {
+      "get": {
+        "summary": "Pipeline",
+        "operationId": "pipeline_start_pipeline_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    },
+    "/search": {
+      "get": {
+        "summary": "Search",
+        "description": "performs hybrid search: vector + keyword; rank by combined score\nexample queries: What Russian disinformation campaigns target France?",
+        "operationId": "search_search_get",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Q" }
+          },
+          {
+            "name": "k",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 10, "title": "K" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/indicators/{typ}": {
+      "get": {
+        "summary": "Indicators",
+        "description": "Lookup indicators by type.\n\nArgs:\n    typ: e.g. 'domain', 'ip', 'phone'",
+        "operationId": "indicators_indicators__typ__get",
+        "parameters": [
+          {
+            "name": "typ",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Typ" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/context/{indicator}": {
+      "get": {
+        "summary": "Context",
+        "description": "Retrieve document and chunk context where an indicator was mentioned.\n\nArgs:\n    value: indicator value",
+        "operationId": "context_context__indicator__get",
+        "parameters": [
+          {
+            "name": "indicator",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Indicator" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/relationships/{indicator}": {
+      "get": {
+        "summary": "Rels",
+        "description": "Explore related indicators up to N hops.\n\nArgs:\n    value: indicator value\n    hops: traversal depth",
+        "operationId": "rels_relationships__indicator__get",
+        "parameters": [
+          {
+            "name": "indicator",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Indicator" }
+          },
+          {
+            "name": "hops",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 1, "title": "Hops" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/network/{indicator}": {
+      "get": {
+        "summary": "Network",
+        "description": "Return network graph of indicators around a given indicator.\n\nArgs:\n    value: indicator value\n    hops: traversal depth (default: 2)\nReturns:\n    dict with 'nodes' and 'links' suitable for visualization",
+        "operationId": "network_network__indicator__get",
+        "parameters": [
+          {
+            "name": "indicator",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Indicator" }
+          },
+          {
+            "name": "hops",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 2, "title": "Hops" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test/semantic": {
+      "get": {
+        "summary": "Q Semantic",
+        "operationId": "q_semantic_test_semantic_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    },
+    "/test/lookup/doppelgaenger": {
+      "get": {
+        "summary": "Q Lookup",
+        "operationId": "q_lookup_test_lookup_doppelgaenger_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    },
+    "/test/twohop": {
+      "get": {
+        "summary": "Q Twohop",
+        "operationId": "q_twohop_test_twohop_get",
+        "parameters": [
+          {
+            "name": "value",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Value" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test/clusters": {
+      "get": {
+        "summary": "Q Clusters",
+        "operationId": "q_clusters_test_clusters_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    },
+    "/test/across-campaigns": {
+      "get": {
+        "summary": "Q Across",
+        "operationId": "q_across_test_across_campaigns_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    },
+    "/test/timeline": {
+      "get": {
+        "summary": "Q Timeline",
+        "operationId": "q_timeline_test_timeline_get",
+        "parameters": [
+          {
+            "name": "value",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Value" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/agent": {
+      "get": {
+        "summary": "Agent Query",
+        "operationId": "agent_query_agent_get",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Q" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": { "$ref": "#/components/schemas/ValidationError" },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": { "anyOf": [{ "type": "string" }, { "type": "integer" }] },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": { "type": "string", "title": "Message" },
+          "type": { "type": "string", "title": "Error Type" }
+        },
+        "type": "object",
+        "required": ["loc", "msg", "type"],
+        "title": "ValidationError"
+      }
+    }
+  }
+}
