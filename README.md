@@ -60,10 +60,12 @@ flowchart TD
 
     %% API Layer
     C --> H[FastAPI: REST + LangGraph Agent]
+    H --> |query|C
 
     %% Chatbot UI
-    H --> I[NiceGUI Chatbot UI]
-    I --> J[Meta-LLaMA Model: Conclusion Generator]
+    H --> I[Meta-LLaMA Model: Conclusion Generator]
+    I --> J[NiceGUI Chatbot UI]
+    J --> |query| H
 ```
 
 ## 🛠️ Tech Stack
